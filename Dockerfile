@@ -65,7 +65,6 @@ RUN apt update && apt upgrade -y && \
 RUN pip3 install --upgrade pip setuptools
 
 # Copy Python Requirements to /root/GreysonBot
-RUN git clone -b shiken https://github.com/DevelopedBots/GreysonBot /root/GreysonBot
 WORKDIR /root/GreysonBot
 
 #Copy config file to /root/GreysonBot/GreysonBot
@@ -74,7 +73,10 @@ COPY ./GreysonBot/sample_config.py ./GreysonBot/config.py* /root/GreysonBot/Grey
 ENV PATH="/home/bot/bin:$PATH"
 
 # Install requirements
-RUN pip3 install -U -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . .
 
 # Starting Worker
 CMD ["python3","-m","GreysonBot"]
